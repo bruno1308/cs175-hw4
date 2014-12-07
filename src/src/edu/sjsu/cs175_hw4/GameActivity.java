@@ -20,19 +20,20 @@ import android.view.Window;
 public class GameActivity extends ActionBarActivity {
 	
 	int width, height;
-
+	String name;
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		int mode = getIntent().getExtras().getInt("mode");
+		name = getIntent().getExtras().getString("name");
 		 requestWindowFeature(Window.FEATURE_NO_TITLE);
 		 Display display = getWindowManager().getDefaultDisplay();
 		 Point size = new Point();
 		 display.getSize(size);
 		  width= size.x;
 		  height = size.y;
-		 setContentView(new DrawAPI(this,width,height,mode));
+		 setContentView(new DrawAPI(this,width,height,mode,name));
 		
 	}
 
@@ -64,6 +65,7 @@ public class GameActivity extends ActionBarActivity {
 	        .setPositiveButton(android.R.string.yes, new OnClickListener() {
 
 	            public void onClick(DialogInterface arg0, int arg1) {
+	            	DrawAPI.chose =1;
 	                finish();
 	            }
 	        }).create().show();

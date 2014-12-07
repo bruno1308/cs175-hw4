@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -19,9 +20,12 @@ import edu.sjsu.cs175_hw4.R;
  * Main screen
  */
 public class MainActivity extends ActionBarActivity {
+	public static final String PREFS_NAME = "MyPrefs";
+	
 	TextView high_score;
 	  DBConnection my_connection;
 	  int opt=0;
+	  String name;
 
 	/* 
 	 * Loads high score or create a new database
@@ -31,25 +35,23 @@ public class MainActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		my_connection = new DBConnection(this, "Game", 3);
-	        high_score = (TextView)findViewById(R.id.txtHighScore);
-	        
-	        SQLiteDatabase db = my_connection.getReadableDatabase();
-	        Cursor c = my_connection.select(db);
-	        if(c.getCount()== 0){
-	        	  db = my_connection.getWritableDatabase();
-	        	 my_connection.insert(db,0);
-	        	 high_score.setText(Integer.toString(0));
-	        	 db.close();
-	    		
-	    	}
-	    	else{
-	    		c.moveToLast();
-	    		int score = c.getInt(1);
-	    		high_score.setText(Integer.toString(score));
-	    		 db.close();
-	    	}
-	        Dialog d = onCreateDialog( savedInstanceState) ;
-	        d.show();
+	    high_score = (TextView)findViewById(R.id.txtHighScore);
+	    SQLiteDatabase db = my_connection.getReadableDatabase();
+	    Cursor c = my_connection.select(db);
+	    if(c.getCount()== 0){
+	       db = my_connection.getWritableDatabase();
+	       my_connection.insert(db,0);
+	       high_score.setText(Integer.toString(0));
+	       db.close();	
+	    }
+	    else{
+	    	c.moveToLast();
+	    	int score = c.getInt(1);
+	    	high_score.setText(Integer.toString(score));
+	    	db.close();
+	    }
+	      Dialog d = onCreateDialog( savedInstanceState) ;
+	      d.show();
 	}
 
 	@Override
@@ -73,8 +75,21 @@ public class MainActivity extends ActionBarActivity {
 	
 	public void btnStart(View v){
 		Intent game = new Intent(this, GameActivity.class);
+		SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+		name = settings.getString("name", "Unknown");
 		game.putExtra("mode", opt);
+		game.putExtra("name", name);
 		startActivity(game);
+ 
+	}
+	public void btnResults(View v){
+		Intent results = new Intent(this, ResultsActivity.class);
+		startActivity(results);
+ 
+	}
+	public void btnConfigs(View v){
+		Intent configs = new Intent(this, ConfigsActivity.class);
+		startActivity(configs);
  
 	}
 	@Override

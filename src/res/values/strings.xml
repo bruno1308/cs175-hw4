@@ -11,5 +11,7 @@
     <string name="pick_toppings">Select the control method</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="title_activity_configs">ConfigsActivity</string>
+    <string name="title_activity_results">ResultsActivity</string>
 
 </resources>

@@ -9,8 +9,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnClickListener;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -52,17 +55,21 @@ public class DrawAPI extends SurfaceView {
     private static final int PIXELS=32;
     private int SPEED=32;
     public int MAX_X;
+    public static int chose = 0;
     private static int MAX_y;
     private int opt;
+    private String name = "";
 
-    public DrawAPI(Context context,int w,int h, int mode) {
+    public DrawAPI(Context context,int w,int h, int mode, String name) {
           super(context);
           final Activity activity = (Activity) context;
           my_connection= new DBConnection(context, "Game", 3);
+          this.name = name;
           height = h;
           width = w;
           opt = mode;
           MAX_X = width-32;
+          chose=0;
           wpixel = width/PIXELS;
           hpixel = height/PIXELS;
           holder = getHolder();
@@ -497,12 +504,12 @@ public class DrawAPI extends SurfaceView {
         	}
         }
         db.close();
+      	saveScore(a, score);
+      	while(chose==0){
+      		
+      	}
         score=0;
-        a.runOnUiThread(new Runnable() {
-      	  public void run() {
-      	    Toast.makeText(a, "Game Over", Toast.LENGTH_LONG ).show();
-      	  }
-      	});
+
         try {
 			Thread.sleep(3000);
 		} catch (InterruptedException e) {
@@ -561,5 +568,56 @@ public class DrawAPI extends SurfaceView {
 		paint.setTextSize(50); 
 		canvas.drawText("Level: "+Integer.toString(difficulty), wpixel*28/2, hpixel*21/10, paint);
 		canvas.drawText("Score: "+Integer.toString(score), wpixel*28*3/4, hpixel*21/10, paint);
+	}
+	public void saveScore(final Activity a, final int score){
+        a.runOnUiThread(new Runnable() {
+		 public void run() {
+      		 new AlertDialog.Builder(a)
+ 	        .setTitle("Save Score")
+ 	        .setMessage("Do you want to send your score to the server?")
+ 	        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+
+ 	            public void onClick(DialogInterface arg0, int arg1) {
+ 	            	
+ 	            }
+ 	        })
+ 	        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+ 	            public void onClick(DialogInterface arg0, int arg1) {
+ 	            	try{
+ 	            		if(Connection.getInstance() ==null){
+ 	            			Connection c = new Connection("54.173.198.121", 7890);
+ 	            			c.execute();
+ 	            			System.out.println("Connection Estabileshed and task running");	            			
+ 	            			//while(!Connection.response.equals("Connected to Server\n")){
+ 	            				
+ 	            			//}
+ 	            			Thread.sleep(500);
+ 	            			Connection.response="";
+ 	            		}
+ 	            	String msg="save:"+Integer.toString(score)+":"+name.toString();
+ 	            	Connection.response="";
+ 	            	Connection.queue.add(msg);
+ 	            	Thread.sleep(500);
+ 	            	String response; 
+ 	            	System.out.println("Waiting for answer..");
+ 					while (Connection.sync == 0 || !Connection.response.equals("Score saved successfully\n")) {
+ 						if(Connection.response.equals("Error while saving score\n")) break;
+ 						System.out.println(Connection.response);
+ 						Thread.sleep(100);
+ 					}
+ 					response = Connection.response;
+ 					Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
+ 					Connection.response="";
+ 					chose = 1;
+ 	            	}catch(Exception e){
+ 	            		Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
+ 	            		chose = 1;
+ 	            	}
+ 	            	
+ 	            }
+ 	        }).create().show();
+      	  }
+      	});
 	}
 }

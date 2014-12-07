@@ -15,23 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/high_score" />
-
-    <Button
-        android:id="@+id/angry_btn"
-        android:layout_width="270dp"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="34dp"
-        android:background="@drawable/buttonshape"
-        android:shadowColor="#A8A8A8"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="5"
-        android:text="@string/start"
-        android:textColor="#FFFFFF"
-        android:textSize="30sp"
-        android:onClick="btnStart" />
+    
 
     <TextView
         android:id="@+id/txtHighScore"
@@ -42,14 +26,64 @@
         android:layout_toRightOf="@+id/textView2"
         android:text="" />
 
+    <Button
+        android:id="@+id/btnCfg"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+		android:layout_marginLeft="205dp"
+        android:layout_alignBottom="@+id/angry_btn"
+        android:background="@drawable/buttonshape"
+        android:onClick="btnConfigs"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:text="Configs"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/Button02"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:layout_alignBaseline="@+id/angry_btn"
+        android:layout_alignBottom="@+id/angry_btn"
+        android:background="@drawable/buttonshape"
+        android:onClick="btnStart"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:text="@string/start"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/angry_btn"
+        android:layout_width="80dp"
+        android:layout_height="60dp"
+        android:layout_alignLeft="@+id/txtHighScore"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="44dp"
+        android:layout_marginLeft="6dp"
+        android:background="@drawable/buttonshape"
+        android:onClick="btnResults"
+        android:shadowColor="#A8A8A8"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:text="Scores"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp" />
+
     <ImageView
         android:id="@+id/imageView1"
-        android:contentDescription="@string/snake"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/angry_btn"
-        android:layout_alignLeft="@+id/angry_btn"
-        android:layout_marginBottom="29dp"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:contentDescription="@string/snake"
         android:src="@drawable/snakems" />
 
 </RelativeLayout>
