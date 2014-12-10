@@ -32,7 +32,7 @@ public final class Connection extends AsyncTask<String, Void, String> {
 	Connection(String addr, int port){
 		//If you will try in your own network, ignore the parameters and set the IP
 		//and port manually HERE, This is my server that MIGHT be off 
-		   this.IP = "54.86.4.121";
+		   this.IP = "10.1.10.24";
 		   this.PORT = port;	
 		   Connection.my_instance = this;
 	         

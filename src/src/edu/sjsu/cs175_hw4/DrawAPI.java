@@ -601,13 +601,13 @@ public class DrawAPI extends SurfaceView {
  	            	Thread.sleep(500);
  	            	String response; 
  	            	System.out.println("Waiting for answer..");
- 					while (Connection.sync == 0 || !Connection.response.equals("Score saved successfully\n")) {
+ 					while (Connection.sync == 0 || !Connection.response.replaceAll("\n", "").replaceAll("\r", "").equals("Score saved successfully")) {
  						if(Connection.response.equals("Error while saving score\n")) break;
  						System.out.println(Connection.response);
  						Thread.sleep(100);
  					}
  					response = Connection.response;
- 					Toast.makeText(getContext(), response, Toast.LENGTH_SHORT).show();
+ 					Toast.makeText(getContext(), response.replaceAll("\n", "").replaceAll("\r", ""), Toast.LENGTH_SHORT).show();
  					Connection.response="";
  					chose = 1;
  	            	}catch(Exception e){

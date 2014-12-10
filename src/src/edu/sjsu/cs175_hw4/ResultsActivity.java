@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ResultsActivity extends ActionBarActivity {
 	TextView firstname,secondname,thirdname,fourthname,fifthname;
@@ -49,7 +50,7 @@ public class ResultsActivity extends ActionBarActivity {
 	public void btnBack(View v){
 		finish();
 	}
-	public void btnResults(View v){
+	public boolean btnResults(View v){
 		try{
 			if(Connection.my_instance == null){
 				Connection c = new Connection("54.173.198.121", 7890);
@@ -63,8 +64,13 @@ public class ResultsActivity extends ActionBarActivity {
 			Connection.queue.add(msg);
 			String response;
 			System.out.println("Waiting for results reply");
+			int time_out=0;
 			while (Connection.sync == 0 || Connection.response.equals("") || !Connection.response.contains(".")) {
 				Thread.sleep(100);
+				time_out++;
+				if(time_out == 20) {
+					return false;
+				}
 			}
 			response = Connection.response;
 			String lines[] = response.split("\\r?\\n");
@@ -84,8 +90,11 @@ public class ResultsActivity extends ActionBarActivity {
 			fourthscore.setText(fourth[1]);
 			fifthname.setText(fifth[0]+" ");
 			fifthscore.setText(fifth[1]);
+			return true;
 		}catch(Exception e){
 			
 		}
+		return true;
 	}
+	
 }
