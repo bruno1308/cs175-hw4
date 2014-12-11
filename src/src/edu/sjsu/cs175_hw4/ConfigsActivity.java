@@ -43,6 +43,7 @@ public class ConfigsActivity extends ActionBarActivity {
 	
 	public void btnOk(View v){
 		name = et.getText().toString();
+		//Save new name
 		if(!name.equals("")){
 			SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 			SharedPreferences.Editor editor = settings.edit();

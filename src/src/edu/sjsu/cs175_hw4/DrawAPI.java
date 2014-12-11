@@ -328,7 +328,7 @@ public class DrawAPI extends SurfaceView {
 	/**
 	 * Check whether the touch was on the buttons, with an error margin
 	 */
-	public boolean buttonTouch(int x, int x_btn, int y, int y_btn, int density){
+	public static boolean buttonTouch(int x, int x_btn, int y, int y_btn, int density){
 		int margin = density/2;
 		if(x > x_btn-margin && x< x_btn+density+margin &&y > y_btn-margin && y< y_btn+density+margin ){
 			return true;
@@ -569,6 +569,12 @@ public class DrawAPI extends SurfaceView {
 		canvas.drawText("Level: "+Integer.toString(difficulty), wpixel*28/2, hpixel*21/10, paint);
 		canvas.drawText("Score: "+Integer.toString(score), wpixel*28*3/4, hpixel*21/10, paint);
 	}
+	/**
+	 * 
+	 * @param a Activity
+	 * @param score to be saved
+	 * Send score to server if player press Button yes
+	 */
 	public void saveScore(final Activity a, final int score){
         a.runOnUiThread(new Runnable() {
 		 public void run() {
@@ -578,7 +584,8 @@ public class DrawAPI extends SurfaceView {
  	        .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
 
  	            public void onClick(DialogInterface arg0, int arg1) {
- 	            	
+ 	            	chose = 1;
+ 	            	return;
  	            }
  	        })
  	        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
@@ -589,9 +596,6 @@ public class DrawAPI extends SurfaceView {
  	            			Connection c = new Connection("54.173.198.121", 7890);
  	            			c.execute();
  	            			System.out.println("Connection Estabileshed and task running");	            			
- 	            			//while(!Connection.response.equals("Connected to Server\n")){
- 	            				
- 	            			//}
  	            			Thread.sleep(500);
  	            			Connection.response="";
  	            		}
@@ -601,7 +605,7 @@ public class DrawAPI extends SurfaceView {
  	            	Thread.sleep(500);
  	            	String response; 
  	            	System.out.println("Waiting for answer..");
- 					while (Connection.sync == 0 || !Connection.response.replaceAll("\n", "").replaceAll("\r", "").equals("Score saved successfully")) {
+ 					while (Connection.sync == 0 || !Connection.response.replaceAll("\n", "").replaceAll("\r", "").contains("Score saved successfully")) {
  						if(Connection.response.equals("Error while saving score\n")) break;
  						System.out.println(Connection.response);
  						Thread.sleep(100);

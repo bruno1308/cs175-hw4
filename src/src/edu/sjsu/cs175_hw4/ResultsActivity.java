@@ -90,6 +90,7 @@ public class ResultsActivity extends ActionBarActivity {
 			fourthscore.setText(fourth[1]);
 			fifthname.setText(fifth[0]+" ");
 			fifthscore.setText(fifth[1]);
+			Connection.response = "";
 			return true;
 		}catch(Exception e){
 			

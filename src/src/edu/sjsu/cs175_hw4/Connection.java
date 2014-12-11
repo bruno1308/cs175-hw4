@@ -72,9 +72,7 @@ public final class Connection extends AsyncTask<String, Void, String> {
 	 	        				String msg = cb.toString();
 								Log.i("Server", msg);
 								
-								response = response+msg;
-								//System.out.println("Server: " + fromServer);
-								//if(fromServer.equals("") || fromServer.equals("Fingercise Server")) break;			
+								response = response+msg;		
 							}
 							if(!queue.isEmpty()){
 								//If client wants something, send it to server
